@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="AirlineApiSuite" verbose="1" >
+    <test name="AirlineApiTests">
+        <packages>
+            <package name="airline" />
+        </packages>
+    </test>
+</suite>

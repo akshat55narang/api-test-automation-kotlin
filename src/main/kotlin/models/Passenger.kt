@@ -1,9 +1,13 @@
 package models
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 class Passenger(
-    val name: String,
-    val trips: Int,
-    val airline: Int,
+    @JsonProperty("name") val name: String?,
+    @JsonProperty("trips") val trips: Int?,
+    @JsonProperty("airline") val airline: Int?,
 ) {
 
 }

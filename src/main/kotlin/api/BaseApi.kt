@@ -13,14 +13,21 @@ import org.apache.http.HttpStatus
 
 open class BaseApi {
 
+    companion object {
+        const val TOKEN_GENERATION_URI = "https://dev-457931.okta.com"
+        const val TOKEN_GENERATION_BASE_PATH = "/oauth2/aushd4c95QtFHsfWt4x6/v1/token"
+        const val APP_URI = "https://api.instantwebtools.net"
+        const val APP_BASE_PATH = "/v2"
+    }
+
     private fun generateTokenBuilder(): RequestSpecification =
         RequestSpecBuilder()
             .setBaseUri(TOKEN_GENERATION_URI)
             .setBasePath(TOKEN_GENERATION_BASE_PATH)
             .setRelaxedHTTPSValidation()
             .setContentType(ContentType.URLENC)
-            .addFilter(RequestLoggingFilter())
-            .addFilter(ResponseLoggingFilter())
+            //.addFilter(RequestLoggingFilter())
+            //.addFilter(ResponseLoggingFilter())
             .build()
 
     protected fun generateAccessToken(
@@ -53,33 +60,19 @@ open class BaseApi {
         .addFilter(ResponseLoggingFilter())
         .build()
 
+    protected fun post(requestSpecification: RequestSpecification): Response = given()
+        .spec(requestSpecification)
+        .`when`()
+        .post()
 
-    protected fun post(requestSpecification: RequestSpecification): Response {
-        return Given {
-            spec(requestSpecification)
-        } When { post() }
-    }
+    protected fun get(requestSpecification: RequestSpecification): Response = given()
+        .spec(requestSpecification)
+        .`when`()
+        .get()
 
-    protected fun get(requestSpecification: RequestSpecification): Response {
-        return Given {
-            spec(requestSpecification)
-        } When {
-            get()
-        }
-    }
+    protected fun get(requestSpecification: RequestSpecification, path: String): Response = given()
+        .spec(requestSpecification)
+        .`when`()
+        .get(path)
 
-    protected fun get(requestSpecification: RequestSpecification, path: String): Response {
-        return Given {
-            spec(requestSpecification)
-        } When {
-            get(path)
-        }
-    }
-
-    companion object {
-        const val TOKEN_GENERATION_URI = "https://dev-457931.okta.com"
-        const val TOKEN_GENERATION_BASE_PATH = "/oauth2/aushd4c95QtFHsfWt4x6/v1/token"
-        const val APP_URI = "https://api.instantwebtools.net"
-        const val APP_BASE_PATH = "/v2/"
-    }
 }

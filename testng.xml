@@ -3,7 +3,7 @@
 <suite name="AirlineApiSuite" verbose="1" >
     <test name="AirlineApiTests">
         <packages>
-            <package name="airline" />
+            <package name="airline"/>
         </packages>
     </test>
 </suite>

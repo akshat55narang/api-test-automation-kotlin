@@ -1,6 +1,8 @@
 package api
 
 import io.restassured.response.Response
+import models.Passengers
+import org.apache.http.HttpStatus
 
 class PassengerApi : BaseApi() {
 
@@ -19,7 +21,7 @@ class PassengerApi : BaseApi() {
     )
 
     fun getAllPassengers(
-        page : String = "0",
+        page: String = "0",
         size: String = "10"
     ): Response {
         val requestSpecification = baseRequest()
@@ -30,6 +32,15 @@ class PassengerApi : BaseApi() {
             path = PASSENGER_API
         )
     }
+
+    fun getValidPassengerId(): String = getAllPassengers()
+        .then()
+        .assertThat()
+        .statusCode(HttpStatus.SC_OK)
+        .extract()
+        .body()
+        .`as`(Passengers::class.java)
+        .data[0].id
 
     fun getPassengerById(passengerId: String): Response = get(
         requestSpecification = baseRequest(),

@@ -7,6 +7,7 @@ import org.apache.http.HttpStatus
 import org.hamcrest.Matchers.equalTo
 import org.testng.Assert.assertTrue
 import org.testng.annotations.Test
+import utils.TestHelpers.assertAirlineResponseObject
 
 
 class AirlineApiTest : BaseTest() {
@@ -32,36 +33,36 @@ class AirlineApiTest : BaseTest() {
 
     @Test(dataProvider = "airlineIds", dataProviderClass = DataProvider::class)
     fun `Verify airline response by airline id`(airlineId: Long) {
-        val response = airlineApi.getAirlineById(airlineId.toString())
-        val airline = response.then()
+        val airline = airlineApi.getAirlineById(airlineId.toString())
+            .then()
             .assertThat()
             .statusCode(HttpStatus.SC_OK)
             .extract()
             .body()
             .`as`(Airline::class.java)
         assertTrue(airline.id == airlineId)
-        //.body("id", equalTo(airlineId))
     }
 
     @Test(enabled = false)
     fun `Verify all the details for Sri Lanka Airlines`() {
-        val response = airlineApi.getAllAirlines()
-        val airlinesArray = response
+        val airlineId = AirlineDetails.CATHAY_PACIFIC.id.toString()
+        val airline = airlineApi.getAirlineById(airlineId)
             .then()
             .assertThat()
             .statusCode(HttpStatus.SC_OK)
             .extract()
             .body()
-            .`as`(Array<Airline>::class.java)
-
-        //.`as`(Airline::class.java)
-        val airlineResponse = airlinesArray.toList().first { it.name == "Sri Lankan Airways" }
-
-        assertTrue(airlineResponse.name == "Sri Lankan Airways")
-        assertTrue(airlineResponse.country == "Sri Lanka")
-        assertTrue(airlineResponse.slogan == "From Sri Lanka")
-        assertTrue(airlineResponse.headQuaters == "Katunayake, Sri Lanka")
-        assertTrue(airlineResponse.website == "www.srilankaairways.com")
-        assertTrue(airlineResponse.established == "1990")
+            .`as`(Airline::class.java)
+        assertAirlineResponseObject(
+            airline,
+            expectedId = 12,
+            expectedName = "Sri Lankan Airways",
+            expectedCountry = "Sri Lanka",
+            expectedLogo = "https://upload.wikimedia.org/wikipedia/en/thumb/9/9b/Qatar_Airways_Logo.svg/sri_lanka.png",
+            expectedSlogan = "From Sri Lanka",
+            expectedHeadQuaters = "Katunayake, Sri Lanka",
+            expectedWebsite = "www.srilankaairways.com",
+            expectedEstablishedDate = "1990"
+        )
     }
 }

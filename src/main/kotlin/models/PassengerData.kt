@@ -8,8 +8,8 @@ class PassengerData(
     @JsonProperty("_id") val id: String,
     @JsonProperty("name")val name: String,
     @JsonProperty("trips")val trips: Int,
-    @JsonProperty("airline")val airline: List<Airline>,
-    @JsonProperty("version") val version: Int
+    @JsonProperty("airline")val airlines: List<Airline>,
+    @JsonProperty("__v") val version: Int
 ) {
 
 }

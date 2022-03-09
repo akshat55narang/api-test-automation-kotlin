@@ -14,14 +14,13 @@ open class BaseTest {
     }
 
     @AfterMethod
-    fun tearDown(iTestResult: ITestResult) {
-        when (iTestResult.status) {
-            1 -> logger.info("********** Test : ${iTestResult.name} completed with status : ${Status.SUCCESS} **********")
-            2 -> logger.info("********** Test : ${iTestResult.name} completed with status : ${Status.FAILURE} **********")
-            3 -> logger.info("********** Test : ${iTestResult.name} completed with status : ${Status.SKIPPED} **********")
-            else -> logger.info("********** Test : ${iTestResult.name} completed with status code : ${iTestResult.status} **********")
+    fun tearDown(testResult: ITestResult) {
+        when (testResult.status) {
+            1 -> logger.info("********** Test : ${testResult.name} completed with status : ${Status.SUCCESS} **********")
+            2 -> logger.info("********** Test : ${testResult.name} completed with status : ${Status.FAILURE} **********")
+            3 -> logger.info("********** Test : ${testResult.name} completed with status : ${Status.SKIPPED} **********")
+            else -> logger.info("********** Test : ${testResult.name} completed with status code : ${testResult.status} **********")
         }
-
     }
 
     enum class Status {

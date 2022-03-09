@@ -16,7 +16,9 @@ Tests - src/test/kotlin <br/>
 Report - target/surefire-reports/index.html
 
 ### How To Run
-From the api-test-automation-kotlin directory -`mvn clean test`
+From the api-test-automation-kotlin directory 
+- Default configuration - `mvn clean test`
+- Override default configuration - `clean test -DdefaultUsername=api-user4@iwt.net -DdefaultPassword=b3z0nV0cLO`
 
 
 

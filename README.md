@@ -1,4 +1,4 @@
-[![Execute API Tests](https://github.com/akshat55narang/api-test-automation-kotlin/actions/workflows/pipeline.yml/badge.svg?branch=master&event=push)](https://github.com/akshat55narang/api-test-automation-kotlin/actions/workflows/pipeline.yml)
+[![Test_Execution_Status](https://github.com/akshat55narang/api-test-automation-kotlin/actions/workflows/pipeline.yml/badge.svg?branch=master&event=push)](https://github.com/akshat55narang/api-test-automation-kotlin/actions/workflows/pipeline.yml)
 
 # api-test-automation-kotlin
 

@@ -29,5 +29,15 @@ enum class AirlineDetails(
         "Cathay City, Hong Kong International Airport, Chek Lap Kok, Hong Kong",
         "www.cathaypacific.com",
         "1946"
-    )
+    ),
+    SINGAPORE_AIRLINES(
+        2,
+        "Singapore Airlines",
+        "Singapore",
+        "https://upload.wikimedia.org/wikipedia/en/thumb/6/6b/Singapore_Airlines_Logo_2.svg/250px-Singapore_Airlines_Logo_2.svg.png",
+        "A Great Way to Fly",
+        "Airline House, 25 Airline Road, Singapore 819829",
+        "www.singaporeair.com",
+        "1947"
+    ),
 }

@@ -16,7 +16,7 @@ class PassengerApiTest : BaseTest() {
     private val passengerApi = PassengerApi()
 
     companion object {
-        const val VALID_PASSENGER_ID = "5ff6fa4141f00e936d8335bd"
+        const val VALID_PASSENGER_ID = "6022cbac631577234b4b0f17"
     }
 
     @Test
@@ -46,20 +46,28 @@ class PassengerApiTest : BaseTest() {
             .extract()
             .body()
             .`as`(PassengerData::class.java)
-        val airline = passenger.airlines.first { it.id == 8L }
-        assertEquals(passenger.name, "John Stones")
-        assertEquals(passenger.trips, 500)
+        val airline = passenger.airlines.first { it.id == AirlineDetails.SINGAPORE_AIRLINES.id }
+        assertEquals(passenger.name, "Passenger_2")
+        assertEquals(passenger.trips, 2)
         assertAirlineResponseObject(
             actualResponse = airline,
-            expectedId = AirlineDetails.THAI_AIRWAYS.id,
-            expectedName = AirlineDetails.THAI_AIRWAYS.airlineName,
-            expectedCountry = AirlineDetails.THAI_AIRWAYS.country,
-            expectedLogo = AirlineDetails.THAI_AIRWAYS.logo,
-            expectedSlogan = AirlineDetails.THAI_AIRWAYS.slogan,
-            expectedHeadQuaters = AirlineDetails.THAI_AIRWAYS.headQuaters,
-            expectedWebsite = AirlineDetails.THAI_AIRWAYS.website,
-            expectedEstablishedDate = AirlineDetails.THAI_AIRWAYS.established
+            expectedId = AirlineDetails.SINGAPORE_AIRLINES.id,
+            expectedName = AirlineDetails.SINGAPORE_AIRLINES.airlineName,
+            expectedCountry = AirlineDetails.SINGAPORE_AIRLINES.country,
+            expectedLogo = AirlineDetails.SINGAPORE_AIRLINES.logo,
+            expectedSlogan = AirlineDetails.SINGAPORE_AIRLINES.slogan,
+            expectedHeadQuaters = AirlineDetails.SINGAPORE_AIRLINES.headQuaters,
+            expectedWebsite = AirlineDetails.SINGAPORE_AIRLINES.website,
+            expectedEstablishedDate = AirlineDetails.SINGAPORE_AIRLINES.established
         )
+    }
+
+    @Test
+    fun `Verify passenger response for a non-existent passenger id`() {
+        passengerApi.getPassengerById("22cbac631577234b4b0f17")
+            .then()
+            .assertThat()
+            .statusCode(HttpStatus.SC_NO_CONTENT)
     }
 
     @Test

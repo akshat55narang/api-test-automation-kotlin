@@ -3,20 +3,36 @@ package passenger
 import BaseTest
 import airline.AirlineDetails
 import api.PassengerApi
+import models.Passenger
 import models.PassengerData
 import models.Passengers
 import org.apache.http.HttpStatus
 import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.CoreMatchers.theInstance
 import org.hamcrest.Matchers
+import org.testng.annotations.AfterClass
+import org.testng.annotations.BeforeClass
 import org.testng.annotations.Test
+import utils.Helpers.passengerFixture
 import utils.TestHelpers.assertAirlineResponseObject
 import kotlin.test.assertEquals
 
 class PassengerApiTest : BaseTest() {
     private val passengerApi = PassengerApi()
+    private lateinit var defaultPassengerId : String
 
-    companion object {
-        const val VALID_PASSENGER_ID = "6022cbac631577234b4b0f17"
+
+    @BeforeClass
+    fun setup() {
+        defaultPassengerId = passengerApi.generatePassengerId()
+    }
+
+    @AfterClass
+    fun tearDown() {
+        passengerApi.deletePassenger(defaultPassengerId)
+            .then()
+            .assertThat()
+            .statusCode(HttpStatus.SC_OK)
     }
 
     @Test
@@ -30,7 +46,7 @@ class PassengerApiTest : BaseTest() {
 
     @Test
     fun `Passenger api should not be accessible without access token`() {
-        passengerApi.getPassengerByIdWithoutToken(VALID_PASSENGER_ID)
+        passengerApi.getPassengerByIdWithoutToken(defaultPassengerId)
             .then()
             .assertThat()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
@@ -39,7 +55,7 @@ class PassengerApiTest : BaseTest() {
 
     @Test
     fun `Verify passenger details for a valid passenger id`() {
-        val passenger = passengerApi.getPassengerById(VALID_PASSENGER_ID)
+        val passenger = passengerApi.getPassengerById(defaultPassengerId)
             .then()
             .assertThat()
             .statusCode(HttpStatus.SC_OK)
@@ -47,8 +63,8 @@ class PassengerApiTest : BaseTest() {
             .body()
             .`as`(PassengerData::class.java)
         val airline = passenger.airlines.first { it.id == AirlineDetails.SINGAPORE_AIRLINES.id }
-        assertEquals(passenger.name, "Passenger_2")
-        assertEquals(passenger.trips, 2)
+        assertEquals(passenger.name, passengerFixture().name)
+        assertEquals(passenger.trips, passengerFixture().trips)
         assertAirlineResponseObject(
             actualResponse = airline,
             expectedId = AirlineDetails.SINGAPORE_AIRLINES.id,

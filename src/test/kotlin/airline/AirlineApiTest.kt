@@ -7,10 +7,16 @@ import org.apache.http.HttpStatus
 import org.hamcrest.Matchers.equalTo
 import org.testng.Assert.assertTrue
 import org.testng.annotations.Test
+import utils.Helpers.airlineFixture
 import utils.TestHelpers.assertAirlineResponseObject
+import kotlin.test.assertEquals
 
 
 class AirlineApiTest : BaseTest() {
+    companion object {
+        val GENERIC_AIRLINE_ID = (Math.random() * 100000).toLong()
+    }
+
     private val airlineApi = AirlineApi()
 
     @Test
@@ -44,7 +50,7 @@ class AirlineApiTest : BaseTest() {
     }
 
     @Test(enabled = false)
-    fun `Verify all the details for Sri Lanka Airlines`() {
+    fun `Verify all the details for Cathay Pacific Airlines`() {
         val airlineId = AirlineDetails.CATHAY_PACIFIC.id.toString()
         val airline = airlineApi.getAirlineById(airlineId)
             .then()
@@ -63,6 +69,32 @@ class AirlineApiTest : BaseTest() {
             expectedHeadQuaters = "Katunayake, Sri Lanka",
             expectedWebsite = "www.srilankaairways.com",
             expectedEstablishedDate = "1990"
+        )
+    }
+
+    @Test
+    fun `create airline`() {
+
+        val airline = airlineFixture(id = GENERIC_AIRLINE_ID)
+        val createdAirline = airlineApi.createAirline(airline)
+            .then()
+            .assertThat()
+            .statusCode(HttpStatus.SC_OK)
+            .extract()
+            .body()
+            .`as`(Airline::class.java)
+        assertEquals(createdAirline.id, GENERIC_AIRLINE_ID)
+        val airlineSearchResult = airlineApi.getAirlineById(GENERIC_AIRLINE_ID.toString())
+            .then()
+            .assertThat()
+            .statusCode(HttpStatus.SC_OK)
+            .extract()
+            .response()
+            .`as`(Airline::class.java)
+        assertEquals(
+            airlineSearchResult.id,
+            GENERIC_AIRLINE_ID,
+            "Airline with id $GENERIC_AIRLINE_ID not found in Backend response"
         )
     }
 }

@@ -28,6 +28,11 @@ open class BaseApi {
         .`when`()
         .post()
 
+    protected fun post(requestSpecification: RequestSpecification, path: String): Response = given()
+        .spec(requestSpecification)
+        .`when`()
+        .post(path)
+
     protected fun get(requestSpecification: RequestSpecification): Response = given()
         .spec(requestSpecification)
         .`when`()
@@ -38,7 +43,15 @@ open class BaseApi {
         .`when`()
         .get(path)
 
-    private fun generateTokenBuilder(): RequestSpecification =
+    protected fun delete(
+        requestSpecification: RequestSpecification = baseRequest(),
+        path: String
+    ) = given()
+        .spec(requestSpecification)
+        .`when`()
+        .delete(path)
+
+    private fun authRequestBuilder(): RequestSpecification =
         RequestSpecBuilder()
             .setBaseUri(TOKEN_GENERATION_URI)
             .setBasePath(TOKEN_GENERATION_BASE_PATH)
@@ -53,7 +66,7 @@ open class BaseApi {
         password: String = getDefaultPassword(),
         clientId: String = getDefaultClientId()
     ): String {
-        val requestSpecification = generateTokenBuilder()
+        val requestSpecification = authRequestBuilder()
             .formParam("username", userName)
             .formParam("password", password)
             .formParam("client_id", clientId)

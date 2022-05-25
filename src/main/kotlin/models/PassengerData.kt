@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-class PassengerData(
+data class PassengerData(
     @JsonProperty("_id") val id: String,
     @JsonProperty("name")val name: String,
     @JsonProperty("trips")val trips: Int,

@@ -1,8 +1,11 @@
 package api
 
 import io.restassured.response.Response
+import models.Passenger
+import models.PassengerData
 import models.Passengers
 import org.apache.http.HttpStatus
+import utils.Helpers.passengerFixture
 
 class PassengerApi : BaseApi() {
 
@@ -19,6 +22,32 @@ class PassengerApi : BaseApi() {
         requestSpecification = baseRequestWithoutToken(),
         path = "${PASSENGER_API}/${passengerId}"
     )
+
+    fun createPassenger(
+        passenger: Passenger = passengerFixture()
+    ): Response {
+        return post(
+            baseRequest()
+                .contentType("application/json")
+                .body(passenger),
+            PASSENGER_API
+        )
+    }
+
+    fun deletePassenger(
+        id: String
+    ): Response {
+        return delete(path = "$PASSENGER_API/$id")
+    }
+
+    fun generatePassengerId() = createPassenger()
+        .then()
+        .assertThat()
+        .statusCode(HttpStatus.SC_OK)
+        .extract()
+        .response()
+        .`as`(PassengerData::class.java)
+        .id
 
     fun getAllPassengers(
         page: String = "0",

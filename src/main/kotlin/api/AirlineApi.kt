@@ -1,6 +1,8 @@
 package api
 
 import io.restassured.response.Response
+import models.Airline
+import utils.Helpers.airlineFixture
 
 class AirlineApi : BaseApi() {
 
@@ -28,5 +30,13 @@ class AirlineApi : BaseApi() {
         path = "$AIRLINE_API_PATH/$id"
     )
 
+    fun createAirline(
+        airline: Airline = airlineFixture()
+    ): Response = post(
+        requestSpecification = baseRequest()
+            .contentType("application/json")
+            .body(airline),
+        path = AIRLINE_API_PATH
+    )
 
 }

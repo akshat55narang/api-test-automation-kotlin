@@ -12,5 +12,5 @@ data class Airline(
     @JsonProperty("slogan") val slogan: String?,
     @JsonProperty("head_quaters") val headQuaters: String?,
     @JsonProperty("website") val website: String?,
-    @JsonProperty("establishment") val established: String?,
+    @JsonProperty("established") val established: String?,
 )
